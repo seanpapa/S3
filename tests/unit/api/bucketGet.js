@@ -15,7 +15,7 @@ const bucketName = 'bucketname';
 const delimiter = '/';
 const log = new DummyRequestLogger();
 const namespace = 'default';
-const postBody = new Buffer('I am a body');
+const postBody = Buffer.from('I am a body');
 const prefix = 'sub';
 
 let testPutBucketRequest;
@@ -35,7 +35,7 @@ describe('bucketGet API', () => {
             headers: {},
             url: `/${bucketName}`,
             namespace,
-        }, new Buffer(0));
+        }, Buffer.alloc(0));
         testPutObjectRequest1 = new DummyRequest({
             bucketName,
             headers: {},

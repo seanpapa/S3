@@ -15,7 +15,7 @@ const canonicalID = 'accessKey1';
 const authInfo = makeAuthInfo(canonicalID);
 const namespace = 'default';
 const bucketName = 'bucketname';
-const postBody = new Buffer('I am a body');
+const postBody = Buffer.from('I am a body');
 const objectKey = 'objectName';
 
 function testAuth(bucketOwner, authUser, bucketPutReq, objPutReq, objDelReq,

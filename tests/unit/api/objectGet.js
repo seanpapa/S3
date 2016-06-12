@@ -18,7 +18,7 @@ const authInfo = makeAuthInfo(canonicalID);
 const namespace = 'default';
 const bucketName = 'bucketname';
 const objectName = 'objectName';
-const postBody = new Buffer('I am a body');
+const postBody = Buffer.from('I am a body');
 
 describe('objectGet API', () => {
     let testPutObjectRequest;
@@ -91,7 +91,7 @@ describe('objectGet API', () => {
 
     it('should get the object data retrieval info for an object put by MPU',
         done => {
-            const partBody = new Buffer('I am a part\n');
+            const partBody = Buffer.from('I am a part\n');
             const initiateRequest = {
                 bucketName,
                 namespace,

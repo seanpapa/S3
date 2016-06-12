@@ -24,7 +24,7 @@ const authInfo = makeAuthInfo(canonicalID);
 const namespace = 'default';
 const bucketName = 'bucketname';
 const mpuBucket = `${constants.mpuBucketPrefix}${bucketName}`;
-const postBody = new Buffer('I am a body');
+const postBody = Buffer.from('I am a body');
 const bucketPutRequest = {
     bucketName,
     namespace,
@@ -87,8 +87,8 @@ describe('Multipart Upload API', () => {
             // until here
             const testUploadId = json.InitiateMultipartUploadResult.UploadId[0];
             const md5Hash = crypto.createHash('md5');
-            const bufferBody = new Buffer(postBody, 'binary');
-            md5Hash.update(bufferBody);
+            const bufferBody = Buffer.from(postBody, 'binary');
+            md5Hash.update(bufferBody, 'binary');
             const calculatedHash = md5Hash.digest('hex');
             const partRequest = new DummyRequest({
                 bucketName,
@@ -146,8 +146,9 @@ describe('Multipart Upload API', () => {
             // until here
             const testUploadId = json.InitiateMultipartUploadResult.UploadId[0];
             const md5Hash = crypto.createHash('md5');
-            const bufferBody = new Buffer(postBody, 'binary');
-            const calculatedHash = md5Hash.update(bufferBody).digest('hex');
+            const bufferBody = Buffer.from(postBody, 'binary');
+            const calculatedHash =
+                md5Hash.update(bufferBody, 'binary').digest('hex');
             const partRequest = new DummyRequest({
                 bucketName,
                 namespace,
@@ -194,8 +195,8 @@ describe('Multipart Upload API', () => {
             // until here
             const testUploadId = json.InitiateMultipartUploadResult.UploadId[0];
             const md5Hash = crypto.createHash('md5');
-            const bufferBody = new Buffer(postBody, 'binary');
-            md5Hash.update(bufferBody);
+            const bufferBody = Buffer.from(postBody, 'binary');
+            md5Hash.update(bufferBody, 'binary');
             const calculatedHash = md5Hash.digest('hex');
             const partRequest = new DummyRequest({
                 bucketName,
@@ -229,8 +230,8 @@ describe('Multipart Upload API', () => {
             // until here
             const testUploadId = json.InitiateMultipartUploadResult.UploadId[0];
             const md5Hash = crypto.createHash('md5');
-            const bufferBody = new Buffer(postBody, 'binary');
-            md5Hash.update(bufferBody);
+            const bufferBody = Buffer.from(postBody, 'binary');
+            md5Hash.update(bufferBody, 'binary');
             const calculatedHash = md5Hash.digest('hex');
             const partRequest = new DummyRequest({
                 bucketName,
@@ -267,8 +268,8 @@ describe('Multipart Upload API', () => {
             // until here
             const testUploadId = json.InitiateMultipartUploadResult.UploadId[0];
             const md5Hash = crypto.createHash('md5');
-            const bufferBody = new Buffer(postBody, 'binary');
-            md5Hash.update(bufferBody);
+            const bufferBody = Buffer.from(postBody, 'binary');
+            md5Hash.update(bufferBody, 'binary');
             const calculatedHash = md5Hash.digest('hex');
             const partRequest = new DummyRequest({
                 bucketName,
@@ -306,8 +307,8 @@ describe('Multipart Upload API', () => {
             // until here
             const testUploadId = json.InitiateMultipartUploadResult.UploadId[0];
             const md5Hash = crypto.createHash('md5');
-            const bufferBody = new Buffer(postBody, 'binary');
-            md5Hash.update(bufferBody);
+            const bufferBody = Buffer.from(postBody, 'binary');
+            md5Hash.update(bufferBody, 'binary');
             const calculatedHash = md5Hash.digest('hex');
             const partRequest1 = new DummyRequest({
                 bucketName,
@@ -322,10 +323,10 @@ describe('Multipart Upload API', () => {
                 calculatedHash,
             }, postBody);
             objectPutPart(authInfo, partRequest1, log, () => {
-                const postBody2 = new Buffer('I am a second part');
+                const postBody2 = Buffer.from('I am a second part');
                 const md5Hash2 = crypto.createHash('md5');
-                const bufferBody2 = new Buffer(postBody2, 'binary');
-                md5Hash2.update(bufferBody2);
+                const bufferBody2 = Buffer.from(postBody2, 'binary');
+                md5Hash2.update(bufferBody2, 'binary');
                 const secondCalculatedMD5 = md5Hash2.digest('hex');
                 const partRequest2 = new DummyRequest({
                     bucketName,
@@ -374,7 +375,7 @@ describe('Multipart Upload API', () => {
     });
 
     it('should complete a multipart upload', done => {
-        const partBody = new Buffer('I am a part\n');
+        const partBody = Buffer.from('I am a part\n');
         initiateRequest.headers['x-amz-meta-stuff'] =
             'I am some user metadata';
         async.waterfall([
@@ -388,7 +389,7 @@ describe('Multipart Upload API', () => {
             // until here
             const testUploadId =
                 json.InitiateMultipartUploadResult.UploadId[0];
-            const md5Hash = crypto.createHash('md5').update(partBody);
+            const md5Hash = crypto.createHash('md5').update(partBody, 'binary');
             const calculatedHash = md5Hash.digest('hex');
             const partRequest = new DummyRequest({
                 bucketName,
@@ -459,7 +460,7 @@ describe('Multipart Upload API', () => {
 
     it('should complete a multipart upload even if etag is sent ' +
         'in post body without quotes (a la Cyberduck)', done => {
-        const partBody = new Buffer('I am a part\n');
+        const partBody = Buffer.from('I am a part\n');
         initiateRequest.headers['x-amz-meta-stuff'] =
             'I am some user metadata';
         async.waterfall([
@@ -479,7 +480,7 @@ describe('Multipart Upload API', () => {
             // until here
             const testUploadId =
                 json.InitiateMultipartUploadResult.UploadId[0];
-            const md5Hash = crypto.createHash('md5').update(partBody);
+            const md5Hash = crypto.createHash('md5').update(partBody, 'binary');
             const calculatedHash = md5Hash.digest('hex');
             const partRequest = new DummyRequest({
                 bucketName,
@@ -554,8 +555,8 @@ describe('Multipart Upload API', () => {
             // until here
             const testUploadId = json.InitiateMultipartUploadResult.UploadId[0];
             const md5Hash = crypto.createHash('md5');
-            const bufferBody = new Buffer(postBody, 'binary');
-            md5Hash.update(bufferBody);
+            const bufferBody = Buffer.from(postBody, 'binary');
+            md5Hash.update(bufferBody, 'binary');
             const calculatedHash = md5Hash.digest('hex');
             const partRequest = new DummyRequest({
                 bucketName,
@@ -606,8 +607,8 @@ describe('Multipart Upload API', () => {
             // until here
             const testUploadId = json.InitiateMultipartUploadResult.UploadId[0];
             const md5Hash = crypto.createHash('md5');
-            const bufferBody = new Buffer(postBody, 'binary');
-            md5Hash.update(bufferBody);
+            const bufferBody = Buffer.from(postBody, 'binary');
+            md5Hash.update(bufferBody, 'binary');
             const calculatedHash = md5Hash.digest('hex');
             const partRequest = new DummyRequest({
                 bucketName,
@@ -658,8 +659,8 @@ describe('Multipart Upload API', () => {
             // until here
             const testUploadId = json.InitiateMultipartUploadResult.UploadId[0];
             const md5Hash = crypto.createHash('md5');
-            const bufferBody = new Buffer(postBody, 'binary');
-            md5Hash.update(bufferBody);
+            const bufferBody = Buffer.from(postBody, 'binary');
+            md5Hash.update(bufferBody, 'binary');
             const calculatedHash = md5Hash.digest('hex');
             const partRequest1 = new DummyRequest({
                 bucketName,
@@ -734,8 +735,8 @@ describe('Multipart Upload API', () => {
             // until here
             const testUploadId = json.InitiateMultipartUploadResult.UploadId[0];
             const md5Hash = crypto.createHash('md5');
-            const bufferBody = new Buffer(postBody, 'binary');
-            md5Hash.update(bufferBody);
+            const bufferBody = Buffer.from(postBody, 'binary');
+            md5Hash.update(bufferBody, 'binary');
             const calculatedHash = md5Hash.digest('hex');
             const wrongMD5 = '3858f62230ac3c915f300c664312c11f-9';
             const partRequest1 = new DummyRequest({
@@ -809,8 +810,8 @@ describe('Multipart Upload API', () => {
             // until here
             const testUploadId = json.InitiateMultipartUploadResult.UploadId[0];
             const md5Hash = crypto.createHash('md5');
-            const bufferBody = new Buffer(postBody, 'binary');
-            md5Hash.update(bufferBody);
+            const bufferBody = Buffer.from(postBody, 'binary');
+            md5Hash.update(bufferBody, 'binary');
             const calculatedHash = md5Hash.digest('hex');
             const partRequest1 = new DummyRequest({
                 bucketName,
@@ -891,8 +892,8 @@ describe('Multipart Upload API', () => {
             const testUploadId =
                 json.InitiateMultipartUploadResult.UploadId[0];
             const md5Hash = crypto.createHash('md5');
-            const bufferBody = new Buffer(postBody, 'binary');
-            md5Hash.update(bufferBody);
+            const bufferBody = Buffer.from(postBody, 'binary');
+            md5Hash.update(bufferBody, 'binary');
             const calculatedHash = md5Hash.digest('hex');
             const partRequest1 = new DummyRequest({
                 bucketName,
@@ -993,8 +994,8 @@ describe('Multipart Upload API', () => {
             const testUploadId =
                 json.InitiateMultipartUploadResult.UploadId[0];
             const md5Hash = crypto.createHash('md5');
-            const bufferBody = new Buffer(postBody, 'binary');
-            md5Hash.update(bufferBody);
+            const bufferBody = Buffer.from(postBody, 'binary');
+            md5Hash.update(bufferBody, 'binary');
             const calculatedHash = md5Hash.digest('hex');
             const partRequest1 = new DummyRequest({
                 bucketName,
@@ -1094,8 +1095,8 @@ describe('Multipart Upload API', () => {
             // until here
             const testUploadId = json.InitiateMultipartUploadResult.UploadId[0];
             const md5Hash = crypto.createHash('md5');
-            const bufferBody = new Buffer(postBody, 'binary');
-            md5Hash.update(bufferBody);
+            const bufferBody = Buffer.from(postBody, 'binary');
+            md5Hash.update(bufferBody, 'binary');
             const calculatedHash = md5Hash.digest('hex');
             const partRequest1 = new DummyRequest({
                 bucketName,
@@ -1179,7 +1180,7 @@ describe('Multipart Upload API', () => {
             // Need to build request in here since do not have uploadId
             // until here
             const testUploadId = json.InitiateMultipartUploadResult.UploadId[0];
-            const bufferMD5 = new Buffer(postBody, 'base64');
+            const bufferMD5 = Buffer.from(postBody, 'base64');
             const calculatedHash = bufferMD5.toString('hex');
             const partRequest = new DummyRequest({
                 bucketName,
@@ -1228,7 +1229,7 @@ describe('Multipart Upload API', () => {
             // Need to build request in here since do not have uploadId
             // until here
             const testUploadId = json.InitiateMultipartUploadResult.UploadId[0];
-            const bufferMD5 = new Buffer(postBody, 'base64');
+            const bufferMD5 = Buffer.from(postBody, 'base64');
             const calculatedHash = bufferMD5.toString('hex');
             const partRequest = new DummyRequest({
                 bucketName,
@@ -1262,7 +1263,7 @@ describe('Multipart Upload API', () => {
 
     it('should not leave orphans in data when overwriting an object with a MPU',
     done => {
-        const partBody = new Buffer('I am a part\n');
+        const partBody = Buffer.from('I am a part\n');
         async.waterfall([
             next => bucketPut(authInfo, bucketPutRequest, log, next),
             next => initiateMultipartUpload(authInfo, initiateRequest, log,
@@ -1271,7 +1272,8 @@ describe('Multipart Upload API', () => {
             (json, next) => {
                 const testUploadId =
                     json.InitiateMultipartUploadResult.UploadId[0];
-                const md5Hash = crypto.createHash('md5').update(partBody);
+                const md5Hash = crypto.createHash('md5')
+                    .update(partBody, 'binary');
                 const calculatedHash = md5Hash.digest('hex');
                 const partRequest = new DummyRequest({
                     bucketName,
@@ -1330,9 +1332,9 @@ describe('Multipart Upload API', () => {
             (result, next) => {
                 assert.strictEqual(ds[0], undefined);
                 assert.deepStrictEqual(ds[1].value,
-                    new Buffer('I am a part\n'));
+                    Buffer.from('I am a part\n'));
                 assert.deepStrictEqual(ds[2].value,
-                    new Buffer('I am a part\n'));
+                    Buffer.from('I am a part\n'));
                 initiateMultipartUpload(authInfo, initiateRequest, log, next);
             },
             (result, next) => parseString(result, next),
@@ -1340,9 +1342,9 @@ describe('Multipart Upload API', () => {
                 const testUploadId =
                     json.InitiateMultipartUploadResult.UploadId[0];
                 const overwritePartBody =
-                    new Buffer('I am an overwrite part\n');
+                    Buffer.from('I am an overwrite part\n');
                 const md5Hash = crypto.createHash('md5')
-                    .update(overwritePartBody);
+                    .update(overwritePartBody, 'binary');
                 const calculatedHash = md5Hash.digest('hex');
                 const partRequest = new DummyRequest({
                     bucketName,
@@ -1384,7 +1386,7 @@ describe('Multipart Upload API', () => {
             assert.strictEqual(ds[1], undefined);
             assert.strictEqual(ds[2], undefined);
             assert.deepStrictEqual(ds[3].value,
-                new Buffer('I am an overwrite part\n'));
+                Buffer.from('I am an overwrite part\n'));
             done();
         });
     });
