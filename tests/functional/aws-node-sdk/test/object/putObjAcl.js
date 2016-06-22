@@ -24,7 +24,7 @@ describe('PUT Object ACL', () => {
         });
 
         afterEach(done => {
-            bucketUtil.empty(bucketName).catch(done).done(() => done());
+            bucketUtil.empty(bucketName).then(() => done()).catch(done);
         });
 
         it('should put object ACLs', done => {

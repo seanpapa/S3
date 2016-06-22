@@ -59,7 +59,7 @@ describe('GET Bucket - AWS.S3.listObjects', () => {
         });
 
         afterEach(done => {
-            bucketUtil.empty(bucketName).catch(done).done(() => done());
+            bucketUtil.empty(bucketName).then(() => done()).catch(done);
         });
 
         it('should return created objects in alphabetical order', done => {
